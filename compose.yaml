@@ -4,12 +4,10 @@ services:
     build:
       context: .
       target: runtime
-    container_name: angular-app
+    container_name: angular-ci-cd
     ports:
       - "8080:80"
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
 
   watchtower:
     image: containrrr/watchtower:latest
@@ -18,7 +16,6 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - WATCHTOWER_POLL_INTERVAL=60 # Checks for newer images on GHCR every 60 seconds
-      - WATCHTOWER_CLEANUP=true     # Removes outdated images after updating
-      - WATCHTOWER_LABEL_ENABLE=true # Only update containers explicitly labeled for watchtower
+      - WATCHTOWER_POLL_INTERVAL=30 # Checks for newer images on GHCR every 30 seconds
+      - WATCHTOWER_CLEANUP=true     # Automatically deletes old image layers after updating
       - WATCHTOWER_INCLUDE_RESTARTING=true
